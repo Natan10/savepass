@@ -1,5 +1,6 @@
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
+import { useTheme } from 'styled-components';
 
 import { 
   Container,
@@ -10,12 +11,14 @@ import {
   Title,
   Bold,
   Subtitle,
-  Button
+  Button,
+  SearchContainer,
+  SearchInput,
+  SearchButton,
+  SearchIcon,
 } from './styles';
-import { useTheme } from 'styled-components';
 
 const Home = () => {
-
   const theme = useTheme();
 
   return(
@@ -41,6 +44,19 @@ const Home = () => {
           </Subtitle>
         </Button>
       </Header>
+
+      <SearchContainer>
+        <SearchInput
+          placeholderTextColor={theme.colors.text_light}
+          placeholder='Qual senha você procura ?'
+          autoCapitalize='sentences'
+          autoCorrect={false}
+        />
+        <SearchButton>
+          <SearchIcon name='search1' size={20} />
+        </SearchButton>
+      </SearchContainer>
+
     </Container>
   );
 }

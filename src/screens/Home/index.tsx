@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
@@ -16,7 +17,12 @@ import {
   SearchInput,
   SearchButton,
   SearchIcon,
+  Secrets,
+  SecretHeader,
+  SecretCardList
 } from './styles';
+import { SecretCard } from '../../components/SecretCard';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 const Home = () => {
   const theme = useTheme();
@@ -57,6 +63,39 @@ const Home = () => {
         </SearchButton>
       </SearchContainer>
 
+      <Secrets>
+        <SecretHeader>
+          <Text
+            style={{
+              fontSize: 22,
+              fontFamily: theme.fonts.medium,
+              color: theme.colors.text
+            }}
+          >
+            Suas senhas
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontFamily: theme.fonts.medium,
+              color: theme.colors.text_light
+            }}
+          >
+            01 ao Total
+          </Text>
+        </SecretHeader>
+        
+        <SecretCardList 
+          data={Array.from(Array(10).keys())}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => String(item)}
+          contentContainerStyle={{
+            paddingBottom: getBottomSpace()
+          }}
+          renderItem={() => <SecretCard />}
+        />
+
+      </Secrets>
     </Container>
   );
 }

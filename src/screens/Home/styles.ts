@@ -13,7 +13,7 @@ export const Header = styled.View`
   height: 180px;
   background-color: ${({theme}) => theme.colors.primary};
 
-  padding-top: ${getStatusBarHeight()};
+  padding-top: ${getStatusBarHeight()}px;
   padding: 0px 24px;
   
   flex-direction: row;
@@ -110,3 +110,23 @@ export const SearchIcon = styled(AntDesign)`
   color: ${({theme}) => theme.colors.black};
 `;
 
+export const Secrets = styled.View`
+  flex: 1;
+  margin-top: 32px;
+  
+  padding: 0 24px;
+`;
+
+export const SecretHeader = styled.View`
+  width: 100%;
+  margin-bottom: 18px;
+  
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+
+export const SecretCardList = styled.FlatList`
+  padding-bottom: 20px;
+`;

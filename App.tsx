@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import { StatusBar } from 'expo-status-bar';
 import {
   useFonts,
   Rubik_300Light,
@@ -8,10 +9,9 @@ import {
   Rubik_700Bold
 } from '@expo-google-fonts/rubik';
 
-import Home from './src/screens/Home';
+import { Routes } from './src/routes';
 
 import theme from './src/global/styles/theme';
-import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style='light' />
-      <Home />
+      <Routes />
     </ThemeProvider>
   );
 }

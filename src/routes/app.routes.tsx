@@ -8,8 +8,14 @@ import { RegisterSecret } from '../screens/RegisterSecret'
 export const AppRoutes = () => {
   return(
     <Navigator screenOptions={{headerShown: false}}>
-      <Screen name='Home' component={Home}/>
-      <Screen name='RegisterSavePass'  component={RegisterSecret}/>
+      <Screen 
+        name='Home' 
+        component={Home}
+      />
+      <Screen 
+        name='RegisterSavePass' 
+        component={RegisterSecret}
+      />
     </Navigator>
   )
 }

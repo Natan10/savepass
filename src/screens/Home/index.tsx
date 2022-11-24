@@ -24,7 +24,7 @@ import {
 import { SecretCard } from '../../components/SecretCard';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
-const Home = () => {
+export const Home = () => {
   const theme = useTheme();
 
   return(
@@ -99,5 +99,3 @@ const Home = () => {
     </Container>
   );
 }
-
-export default Home;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native'
 
 import { 
   Container,
@@ -26,6 +27,12 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Home = () => {
   const theme = useTheme();
+  const navigation = useNavigation();
+
+  const handleAddNewSavePass = () => {
+    navigation.navigate('RegisterSavePass');
+  }
+
 
   return(
     <Container>
@@ -44,7 +51,7 @@ export const Home = () => {
             <Subtitle>Sinta-se seguro aqui</Subtitle>
           </UserInfo>
         </UserContainer>
-        <Button>
+        <Button activeOpacity={0.5} onPress={handleAddNewSavePass}>
           <Subtitle>
             <AntDesign name="plus" size={16} color={theme.colors.white}/>
           </Subtitle>

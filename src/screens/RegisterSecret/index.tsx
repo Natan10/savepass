@@ -1,10 +1,22 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 import { useForm, FieldValues, Control } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTheme } from 'styled-components';
 import * as yup from 'yup';
 
 import { InputForm } from '../../components/InputForm';
-import { Container, Form, SaveButton, Title } from './styles';
+import { 
+  Container,
+  Form,
+  SaveButton,
+  Title,
+  Header,
+  HeaderGoButton,
+  HeaderTitle
+} from './styles';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 interface FormData {
   serviceKey: string;
@@ -19,6 +31,9 @@ const schema = yup.object().shape({
 }).required();
 
 export const RegisterSecret = () => {
+  const theme = useTheme();
+  const navigation = useNavigation();
+
   const { 
     control, 
     reset, 
@@ -35,40 +50,60 @@ export const RegisterSecret = () => {
     reset();
   }
 
-  return(
-    <Container>
-      <Form>
-        <InputForm 
-          labelName='Nome do serviço' 
-          name="serviceKey"
-          autoCorrect={false}
-          autoCapitalize="sentences"
-          control={formControl}
-          error={errors && errors.serviceKey?.message}
-        />
-        <InputForm 
-          labelName='E-mail ou usuário' 
-          name="userKey"
-          autoCapitalize='none'
-          autoCorrect={false}
-          control={formControl}
-          error={errors && errors.userKey?.message}
-        />
-        <InputForm 
-          labelName='Senha' 
-          name="passwordKey"
-          control={formControl}
-          secureTextEntry
-          keyboardType='visible-password'
-          autoCorrect={false}
-          error={errors && errors.passwordKey?.message}
-        />
+  const handleGoBack = () => {
+    navigation.goBack();
+  }
 
-        <SaveButton onPress={handleSubmit(handleCreateSavePass)}>
-          <Title>Salvar</Title>
-        </SaveButton>
-      </Form>
-    </Container>
+  return(
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      enabled
+      style={{flex: 1}}
+    >
+      <Header>
+        <HeaderGoButton onPress={handleGoBack}>
+          <FontAwesome 
+            name="chevron-left" 
+            size={20} 
+            color={theme.colors.primary}
+          />
+        </HeaderGoButton>
+        <HeaderTitle>Cadastro de senha</HeaderTitle>
+      </Header>
+      <Container>
+        <Form>
+          <InputForm 
+            labelName='Nome do serviço' 
+            name="serviceKey"
+            autoCorrect={false}
+            autoCapitalize="none"
+            control={formControl}
+            error={errors && errors.serviceKey?.message}
+          />
+          <InputForm 
+            labelName='E-mail ou usuário' 
+            name="userKey"
+            autoCapitalize='none'
+            autoCorrect={false}
+            control={formControl}
+            error={errors && errors.userKey?.message}
+          />
+          <InputForm 
+            labelName='Senha' 
+            name="passwordKey"
+            control={formControl}
+            secureTextEntry
+            keyboardType='visible-password'
+            autoCorrect={false}
+            error={errors && errors.passwordKey?.message}
+          />
+
+          <SaveButton onPress={handleSubmit(handleCreateSavePass)}>
+            <Title>Salvar</Title>
+          </SaveButton>
+        </Form>
+      </Container>
+    </KeyboardAvoidingView>
   );
 }
 

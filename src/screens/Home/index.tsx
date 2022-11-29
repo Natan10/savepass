@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
-
+import { SecretCard, SecretCardData } from '../../components/SecretCard';
 import { 
   Container,
   Header,
@@ -25,12 +25,11 @@ import {
   SecretHeader,
   SecretCardList
 } from './styles';
-import { SecretCard, SecretCardData } from '../../components/SecretCard';
-
 
 const storageKey = '@savePass:items';
 
 export const Home = () => {
+  const [load, setLoad] = useState(true);
   const [savePassItems, setSavePassItems] = useState<SecretCardData[]>([]);
   const [filterSavePassItems, setFilterSavePassItems] = useState<SecretCardData[]>([]);
 
@@ -51,6 +50,8 @@ export const Home = () => {
     } catch (error) {
       console.log(error);
       Alert.alert('Erro ao carregar informações');
+    } finally {
+      setLoad(false);
     }
   }
 
@@ -83,7 +84,7 @@ export const Home = () => {
           />
           <UserInfo>
             <Title numberOfLines={1}>
-              Olá, <Bold>Rocketseat</Bold>
+              Olá, <Bold>Natanael</Bold>
             </Title>
             <Subtitle>Sinta-se seguro aqui</Subtitle>
           </UserInfo>
@@ -131,7 +132,10 @@ export const Home = () => {
         </SecretHeader>
         
         <SecretCardList 
-          data={filterSavePassItems}
+          data={load ? 
+            [{id: '1'} as SecretCardData,{id: '2'} as SecretCardData,{id: '3'} as SecretCardData] :
+            filterSavePassItems
+          }
           showsVerticalScrollIndicator={false}
           keyExtractor={(item: any) => item.id}
           contentContainerStyle={{
@@ -143,18 +147,18 @@ export const Home = () => {
                 id: item.id,
                 user: item.user,
                 service: item.service,
-                password: item.password
+                password: item.password,
+                load
               }}
             />
           )}
         />
-
       </Secrets>
     </Container>
   );
 }
 
-// filtro 
-// placeholder no load
+// filtro - done
+// placeholder no load - done
 // github provider login
 // delete ao scroll

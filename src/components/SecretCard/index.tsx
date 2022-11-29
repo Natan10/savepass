@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { useTheme } from 'styled-components';
+import { 
+  Placeholder,
+  PlaceholderMedia,
+  Fade
+} from "rn-placeholder";
 
 import { 
   Container,
@@ -9,7 +15,6 @@ import {
   Email,
   Secret
 } from './styles';
-import { useTheme } from 'styled-components';
 
 export interface SecretCardData {
   id: string;
@@ -18,17 +23,38 @@ export interface SecretCardData {
   password: string;
 }
 
-interface Props {
-  data: SecretCardData
+export interface ViewSecretCardData extends SecretCardData {
+  load?: boolean;
 }
 
+interface Props {
+  data: ViewSecretCardData
+}
 
 export const SecretCard = ({data}: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const theme = useTheme();
 
-  return(
+  return data.load ? (
+    <Placeholder 
+      Animation={Fade}
+      style={{
+        opacity: 0.2,
+      }}
+    >
+      <PlaceholderMedia 
+        color={theme.colors.black}
+        style={{
+          flex: 1,
+          width: '100%',
+          height: 90,
+          borderRadius: 5,
+          marginBottom: 18,
+        }}
+      />
+    </Placeholder>
+  ):(
     <Container
       end={{x:1,y:0}}     
       colors={[ isVisible ? '#EBF2FF' : '#ffffff', '#ffffff']}

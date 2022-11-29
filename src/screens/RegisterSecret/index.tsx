@@ -56,9 +56,7 @@ export const RegisterSecret = () => {
         user: form.userKey,
         service: form.serviceKey,
         password: form.passwordKey
-      };
-
-    
+      };    
 
       const data = await AsyncStorage.getItem(storageKey);
       const newData = data ? JSON.parse(data) : [];

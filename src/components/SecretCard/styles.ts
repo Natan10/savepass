@@ -13,7 +13,7 @@ export const Container = styled(LinearGradient)`
   margin-bottom: 18px;
 
   border-radius: 5px;
-  transition: all 1000ms ease-in-out;
+  transition: all 100ms ease-in-out;
 
   flex-direction: row;
   align-items: center;

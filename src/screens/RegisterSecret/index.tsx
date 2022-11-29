@@ -1,9 +1,12 @@
 import React from 'react';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useTheme } from 'styled-components';
+import uuid from 'react-native-uuid';
 import { useForm, FieldValues, Control } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTheme } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as yup from 'yup';
 
 import { InputForm } from '../../components/InputForm';
@@ -16,7 +19,6 @@ import {
   HeaderGoButton,
   HeaderTitle
 } from './styles';
-import { KeyboardAvoidingView, Platform } from 'react-native';
 
 interface FormData {
   serviceKey: string;
@@ -30,13 +32,15 @@ const schema = yup.object().shape({
   passwordKey: yup.string().min(6, 'Deve ter no mínimo 6 caracteres').required('Deve possuir um password')
 }).required();
 
+
+const storageKey = '@savePass:items';
+
 export const RegisterSecret = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
   const { 
-    control, 
-    reset, 
+    control,  
     handleSubmit, 
     formState: { errors } 
   } = useForm<FormData>({
@@ -45,9 +49,27 @@ export const RegisterSecret = () => {
 
   const formControl = control as unknown as Control<FieldValues,any>;
 
-  const handleCreateSavePass = (form: FormData) => {
-    console.log(form)
-    reset();
+  const handleCreateSavePass = async (form: FormData) => {
+    try {
+      const newSavePass = {
+        id: String(uuid.v4()),
+        user: form.userKey,
+        service: form.serviceKey,
+        password: form.passwordKey
+      };
+
+    
+
+      const data = await AsyncStorage.getItem(storageKey);
+      const newData = data ? JSON.parse(data) : [];
+
+      await AsyncStorage.setItem(storageKey, JSON.stringify([...newData, newSavePass]));
+      
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);``
+      Alert.alert('Erro ao salvar novo SavePass, Tente novamente!');
+    }
   }
 
   const handleGoBack = () => {
@@ -78,6 +100,7 @@ export const RegisterSecret = () => {
             autoCorrect={false}
             autoCapitalize="none"
             control={formControl}
+            maxLength={40}
             error={errors && errors.serviceKey?.message}
           />
           <InputForm 
@@ -86,6 +109,7 @@ export const RegisterSecret = () => {
             autoCapitalize='none'
             autoCorrect={false}
             control={formControl}
+            maxLength={40}
             error={errors && errors.userKey?.message}
           />
           <InputForm 
@@ -95,6 +119,7 @@ export const RegisterSecret = () => {
             secureTextEntry
             keyboardType='visible-password'
             autoCorrect={false}
+            maxLength={40}
             error={errors && errors.passwordKey?.message}
           />
 

@@ -11,8 +11,19 @@ import {
 } from './styles';
 import { useTheme } from 'styled-components';
 
+export interface SecretCardData {
+  id: string;
+  user: string;
+  service: string;
+  password: string;
+}
 
-export const SecretCard = () => {
+interface Props {
+  data: SecretCardData
+}
+
+
+export const SecretCard = ({data}: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const theme = useTheme();
@@ -25,16 +36,16 @@ export const SecretCard = () => {
       <ShowSecret onPress={() => setIsVisible(old => !old)}>
         <FontAwesome
           name={`${ isVisible ? 'eye-slash' : 'eye'}`} 
-          size={20} 
           color={isVisible ? theme.colors.primary : theme.colors.text_light} 
+          size={20} 
         /> 
       </ShowSecret>
 
       <SecretContent>
-        <SecretName visible={isVisible}>Plataforma Rocketseat</SecretName>
+        <SecretName visible={isVisible}>{data.service}</SecretName>
         {!isVisible ? 
-          <Email>seuemail@gmail.com</Email> :
-          <Secret>seuemail@gmail.com</Secret>
+          <Email>{data.user}</Email> :
+          <Secret>{data.password}</Secret>
         }
       </SecretContent>
     </Container>

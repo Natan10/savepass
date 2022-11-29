@@ -1,8 +1,11 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+
 
 import { 
   Container,
@@ -22,10 +25,14 @@ import {
   SecretHeader,
   SecretCardList
 } from './styles';
-import { SecretCard } from '../../components/SecretCard';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { SecretCard, SecretCardData } from '../../components/SecretCard';
+
+
+const storageKey = '@savePass:items';
 
 export const Home = () => {
+  const [savePassItems, setSavePassItems] = useState<SecretCardData[]>([]);
+
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -33,6 +40,23 @@ export const Home = () => {
     navigation.navigate('RegisterSavePass');
   }
 
+  const loadSavePassItems = async () => {
+    try {
+      const data = await AsyncStorage.getItem(storageKey);
+      const newData = data ? JSON.parse(data) : []; 
+      
+      setSavePassItems(newData);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro ao carregar informações');
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      loadSavePassItems();
+    },[])
+  );
 
   return(
     <Container>
@@ -93,16 +117,30 @@ export const Home = () => {
         </SecretHeader>
         
         <SecretCardList 
-          data={Array.from(Array(10).keys())}
+          data={savePassItems}
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => String(item)}
+          keyExtractor={(item: any) => item.id}
           contentContainerStyle={{
             paddingBottom: getBottomSpace()
           }}
-          renderItem={() => <SecretCard />}
+          renderItem={({item}: any) => (
+            <SecretCard 
+              data={{
+                id: item.id,
+                user: item.user,
+                service: item.service,
+                password: item.password
+              }}
+            />
+          )}
         />
 
       </Secrets>
     </Container>
   );
 }
+
+// filtro 
+// placeholder no load
+// github provider login
+// delete ao scroll

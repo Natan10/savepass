@@ -1,22 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Alert } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
+import { Header } from '../../components/Header';
 import { SecretCard, SecretCardData } from '../../components/SecretCard';
 import { 
   Container,
-  Header,
-  UserContainer,
-  UserPhoto,
-  UserInfo,
-  Title,
-  Bold,
-  Subtitle,
-  Button,
   SearchContainer,
   SearchInput,
   SearchButton,
@@ -74,27 +66,7 @@ export const Home = () => {
 
   return(
     <Container>
-      <Header>
-        <UserContainer>
-          <UserPhoto
-            resizeMode='cover'
-            source={{
-              uri: 'https://doodleipsum.com/700/avatar?bg=FF3C3C&i=3cdf1e1375692dbe37689851492c2957'
-            }} 
-          />
-          <UserInfo>
-            <Title numberOfLines={1}>
-              Olá, <Bold>Natanael</Bold>
-            </Title>
-            <Subtitle>Sinta-se seguro aqui</Subtitle>
-          </UserInfo>
-        </UserContainer>
-        <Button activeOpacity={0.5} onPress={handleAddNewSavePass}>
-          <Subtitle>
-            <AntDesign name="plus" size={16} color={theme.colors.white}/>
-          </Subtitle>
-        </Button>
-      </Header>
+      <Header addNewSavePass={handleAddNewSavePass} />
 
       <SearchContainer>
         <SearchInput

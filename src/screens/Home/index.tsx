@@ -32,6 +32,7 @@ const storageKey = '@savePass:items';
 
 export const Home = () => {
   const [savePassItems, setSavePassItems] = useState<SecretCardData[]>([]);
+  const [filterSavePassItems, setFilterSavePassItems] = useState<SecretCardData[]>([]);
 
   const theme = useTheme();
   const navigation = useNavigation();
@@ -46,10 +47,22 @@ export const Home = () => {
       const newData = data ? JSON.parse(data) : []; 
       
       setSavePassItems(newData);
+      setFilterSavePassItems(newData);
     } catch (error) {
       console.log(error);
       Alert.alert('Erro ao carregar informações');
     }
+  }
+
+  const filterSavePassItem = (text: string) => {
+    if(!text) {
+      setFilterSavePassItems([...savePassItems]);
+    }
+    
+    const filter = savePassItems.filter(pass => 
+      pass.service.toUpperCase().includes(text.toUpperCase())
+    );
+    setFilterSavePassItems([...filter]);
   }
 
   useFocusEffect(
@@ -88,6 +101,7 @@ export const Home = () => {
           placeholder='Qual senha você procura ?'
           autoCapitalize='sentences'
           autoCorrect={false}
+          onChangeText={filterSavePassItem}
         />
         <SearchButton>
           <SearchIcon name='search1' size={20} />
@@ -112,12 +126,12 @@ export const Home = () => {
               color: theme.colors.text_light
             }}
           >
-            01 ao Total
+            {filterSavePassItems.length > 1 ? `${filterSavePassItems.length} items`: `${filterSavePassItems.length} item`}
           </Text>
         </SecretHeader>
         
         <SecretCardList 
-          data={savePassItems}
+          data={filterSavePassItems}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item: any) => item.id}
           contentContainerStyle={{

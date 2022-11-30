@@ -32,24 +32,24 @@ export interface User {
   avatar?: string;
 }
 
-const url = 'https://github.com/login/oauth/authorize';
-const client_id = '7352dd672ffbb8de0a7c';
-const client_secret = 'c7ccbbb14c1fccdbdcae287db03325b503157d20';
-const redirect_uri = 'https://auth.expo.io/@natanmoreira/savepass';
-
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthContextWrapper = ({children}: AuthContextWrapperProps) => {
   const [user, setUser] = useState({} as User);
 
+  const { GITHUB_URI_AUTH } = process.env; 
+  const { GITHUB_CLIENT_ID } = process.env; 
+  const { GITHUB_CLIENT_SECRET } = process.env; 
+  const { REDIRECT_URI } = process.env; 
+
   const signIn = async () => {
     try {
-      const authUrl = `${url}?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read:user`; 
+      const authUrl = `${GITHUB_URI_AUTH}?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=read:user`; 
       const response = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
 
       if(response.type === 'success') {
         const getAccessTokenUrl = 
-          `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&code=${response.params.code}`;
+          `https://github.com/login/oauth/access_token?client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&redirect_uri=${REDIRECT_URI}&code=${response.params.code}`;
 
         const { data } = await axios.post<TokenInfoResponse>(getAccessTokenUrl, {}, {
           headers: {
@@ -70,7 +70,6 @@ export const AuthContextWrapper = ({children}: AuthContextWrapperProps) => {
           avatar: userInfo.avatar_url 
         });
       }
-    
     } catch (error) {
       console.error(error);
       Alert.alert('Erro ao realizar login com o Github');
@@ -91,5 +90,3 @@ export const useAuth = () => {
   const auth = useContext(AuthContext);
   return auth;
 }
-// client-id -> 7352dd672ffbb8de0a7c
-// secret -> c7ccbbb14c1fccdbdcae287db03325b503157d20

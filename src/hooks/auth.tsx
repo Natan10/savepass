@@ -6,6 +6,7 @@ import axios from 'axios';
 interface AuthContextProps {
   signIn: () => Promise<void>;
   user: User;
+  signInLoad: boolean;
 }
 
 interface AuthContextWrapperProps {
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthContextWrapper = ({children}: AuthContextWrapperProps) => {
   const [user, setUser] = useState({} as User);
+  const [signInLoad, setSignInLoad] = useState(false);
 
   const { GITHUB_URI_AUTH } = process.env; 
   const { GITHUB_CLIENT_ID } = process.env; 
@@ -43,6 +45,8 @@ export const AuthContextWrapper = ({children}: AuthContextWrapperProps) => {
   const { REDIRECT_URI } = process.env; 
 
   const signIn = async () => {
+    setSignInLoad(true);
+
     try {
       const authUrl = `${GITHUB_URI_AUTH}?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=read:user`; 
       const response = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
@@ -73,13 +77,16 @@ export const AuthContextWrapper = ({children}: AuthContextWrapperProps) => {
     } catch (error) {
       console.error(error);
       Alert.alert('Erro ao realizar login com o Github');
+    } finally {
+      setSignInLoad(false);
     }
   }
 
   return(
     <AuthContext.Provider value={{
       user,
-      signIn
+      signIn,
+      signInLoad
     }}>
       {children}
     </AuthContext.Provider>

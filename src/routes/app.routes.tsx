@@ -2,12 +2,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const { Navigator, Screen } = createStackNavigator();
 
-import { Home } from '../screens/Home'
-import { RegisterSecret } from '../screens/RegisterSecret'
+import { Login } from '../screens/Login';
+import { Home } from '../screens/Home';
+import { RegisterSecret } from '../screens/RegisterSecret';
 
 export const AppRoutes = () => {
   return(
     <Navigator screenOptions={{headerShown: false}}>
+      <Screen 
+        name='Login' 
+        component={Login}
+      />
       <Screen 
         name='Home' 
         component={Home}

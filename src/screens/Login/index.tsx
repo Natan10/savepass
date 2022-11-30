@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, Modal, View } from 'react-native';
 import { useAssets } from 'expo-asset';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../../hooks/auth';
 
@@ -15,7 +16,8 @@ import {
 
 export const Login = () => {
   const theme = useTheme();
-  const {signInLoad, signIn} = useAuth();
+  const navigation = useNavigation();
+  const {signInLoad, signIn, user} = useAuth();
 
   const [assets] = useAssets([require('../../assets/splash.png')]);
   const logo = assets ? assets![0].localUri : '';
@@ -24,6 +26,12 @@ export const Login = () => {
   const handleLogin = async () => {
     await signIn();
   }
+
+  useEffect(() => {
+    if(user.id) {
+      navigation.navigate('Home');
+    }
+  }, [user]);
 
   return(
     <Container>
@@ -49,7 +57,7 @@ export const Login = () => {
           </>
         }       
       </Button>
-      
+
       <Modal
         animationType='fade'
         visible={signInLoad}

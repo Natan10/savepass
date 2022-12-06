@@ -113,7 +113,7 @@ export const Home = () => {
           contentContainerStyle={{
             paddingBottom: getBottomSpace()
           }}
-          renderItem={({item}: any) => (
+          renderItem={({item, index}: any) => (
             <SecretCard 
               data={{
                 id: item.id,
@@ -122,6 +122,7 @@ export const Home = () => {
                 password: item.password,
                 load
               }}
+              index={index}
             />
           )}
         />

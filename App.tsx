@@ -13,6 +13,7 @@ import { Routes } from './src/routes';
 import { AuthContextWrapper } from './src/hooks/auth';
 
 import theme from './src/global/styles/theme';
+import { Animation } from './src/screens/Animation';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,6 +30,7 @@ export default function App() {
       <AuthContextWrapper>
         <StatusBar style='light' />
         <Routes />
+        {/* <Animation /> */}
       </AuthContextWrapper>
     </ThemeProvider>
   );

@@ -18,6 +18,7 @@ import {
   SecretCardList
 } from './styles';
 
+
 const storageKey = '@savePass:items';
 
 export const Home = () => {
@@ -31,6 +32,12 @@ export const Home = () => {
   const handleAddNewSavePass = () => {
     navigation.navigate('RegisterSavePass');
   }
+
+  const handleDeleteSavePassItem = async (id: string) => {
+    const items = savePassItems.filter(el => el.id !== id);
+    await AsyncStorage.setItem(storageKey, JSON.stringify([...items]));
+    setSavePassItems(items); 
+  };
 
   const loadSavePassItems = async () => {
     try {
@@ -123,15 +130,12 @@ export const Home = () => {
                 load
               }}
               index={index}
+              onDelete={handleDeleteSavePassItem}
             />
           )}
         />
+        
       </Secrets>
     </Container>
   );
 }
-
-// filtro - done
-// placeholder no load - done
-// github provider login
-// delete ao scroll

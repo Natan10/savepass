@@ -5,13 +5,11 @@ interface SecretNameProps {
   visible: boolean;
 }
 
-
 export const Container = styled(LinearGradient)`
   width: 100%;
-  height: 90px;
   padding: 0 24px;
-  margin-bottom: 18px;
-
+  height: 90px;
+  
   border-radius: 5px;
   transition: all 100ms ease-in-out;
 
